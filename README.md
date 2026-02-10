@@ -1,34 +1,33 @@
-# Usage
+# VLC Playlist Generator
 
-- Create a new github repo.
-- Clone it (gh repo clone opsimathically/reponame)
-- Download this as a zip from github.
-- Unpack it in your new repo directory (cp -a /path/to/source/. /path/to/destination/)
-- npm install
-- Unit tests should follow: ./test/your_test_dir/sometest.test.ts
-- use 'npm run test' to run all unit tests at once.
+I was spending too much time every day trying to figure out what background noise to have playing while I worked, so I created this project which will just scan a directory, select some random content and shove it in a m3u playlist file. That way you can just queue up whatever random nonsense, let it play, and get to work.
 
-# Zod and Runtime Schema Validation
+```bash
+# You can run it as a command line bin.
+npx tsx ./src/index.ts --source-search-directory /home/your_user/Downloads/ \
+    --output-playlist-file-destination /tmp/my_playlist.m3u \
+    --number-of-results 25
+```
 
-We use ts-to-zod to autogenerate schemas for runtime data validation.
+```typescript
+// You can import the class as a typescript module.
+import { VLCPlaylistGenerator } from '@opsimathically/vlc_playlist_generator';
 
-- [ts-to-zod github](https://github.com/fabien0102/ts-to-zod)
-- [ts-to-zod npm](https://www.npmjs.com/package/ts-to-zod)
+// create class handle
+const vlc_playlist_generator = new VLCPlaylistGenerator();
 
-Schemas built examine types AND typedoc within your types file, so the schema can validate via lengths, regular expressions, etc. Please see the ts-to-zod documentation on what typedoc expressions are valid, and how to use them in your types.
-
-Running **_npm run ts-to-zod_** will autogenerate schemas based on the **_ts-to-zod.config.mjs_** file configuration.
-
-When you run **_npm run build_** it automatically runs ts-to-zod beforehand. However, when running unit tests you'll need to rebuild your schemas on your own if they've changed (aka: run **_npm run ts-to-zod_**).
-
-# Project Name
-
-Project description.
+// generate playlist
+await vlc_playlist_generator.createPlaylist({
+  number_of_results: 100,
+  output_playlist_file_destination: '/tmp/whatever_random_playlistname.m3u',
+  source_search_directory: '/home/your_user/Downloads/'
+});
+```
 
 ## Install
 
 ```bash
-npm install @opsimathically/yourproject
+npm install @opsimathically/vlc_playlist_generator
 ```
 
 ## Building from source
@@ -37,8 +36,6 @@ This package is intended to be run via npm, but if you'd like to build from sour
 clone this repo, enter directory, and run `npm install` for dev dependencies, then run
 `npm run build`.
 
-## Usage
+## Reference
 
-[See API Reference for documentation](https://github.com/opsimathically/yourproject/docs/)
-
-[See unit tests for more direct usage examples](https://github.com/opsimathically/yourproject/test/index.test.ts)
+[See API Reference for documentation](https://github.com/opsimathically/vlc_playlist_generator/tree/main/docs)
